@@ -1,0 +1,170 @@
+--- archive/original_sources/recalculate_ERI_2001_2020_FINAL.py
++++ scripts/01_preprocessing/generate_initial_legacy_product.py
+@@ -73,6 +73,7 @@
+ import math
+ import json
+ import warnings
++import os
+ from pathlib import Path
+ from collections import defaultdict
+ 
+@@ -92,7 +93,7 @@
+ # 0. USER CONFIGURATION
+ # =============================================================================
+ 
+-ROOT = Path(r"F:\data\China")
++ROOT = Path(os.environ.get("ERPI_DATA_ROOT", "./data")).expanduser().resolve()
+ 
+ def _find_case_insensitive_child(root: Path, wanted_name: str, want_dir: bool = False) -> Path:
+     """Find a child of root by case-insensitive name."""
+
+--- archive/original_sources/recheck_ERPI_NTL_exact_full_grid.py
++++ scripts/03_validation/recheck_NTL_source_fullgrid.py
+@@ -22,6 +22,7 @@
+ import argparse
+ import gc
+ import json
++import os
+ from pathlib import Path
+ 
+ import numpy as np
+@@ -81,7 +82,7 @@
+ 
+ def main(argv=None):
+     p=argparse.ArgumentParser(description=__doc__)
+-    p.add_argument('--root',type=Path,default=Path(r'F:\data\China'))
++    p.add_argument('--root',type=Path,default=Path(os.environ.get("ERPI_DATA_ROOT", "./data")).expanduser().resolve())
+     p.add_argument('--years',default='2001-2020',help='2001-2020 or comma-separated years')
+     p.add_argument('--save-cleaned',action='store_true',help='Save corrected NTL candidates in NEW audit folder only')
+     args=p.parse_args(argv)
+
+--- archive/original_sources/ERPI_2001_2020_NTL_corrected_candidate.py
++++ scripts/02_erpi_generation/generate_NTL_corrected_ERPI.py
+@@ -556,7 +556,7 @@
+ 
+ def main():
+     ap=argparse.ArgumentParser(description='Non-destructive corrected PANDA NTL ERPI candidate, 2001–2020')
+-    ap.add_argument('--root',type=Path,default=Path(r'F:\data\China'))
++    ap.add_argument('--root',type=Path,default=Path(os.environ.get("ERPI_DATA_ROOT", "./data")).expanduser().resolve())
+     ap.add_argument('--output',type=Path,help='Separate candidate folder; defaults to v1 alongside original')
+     ap.add_argument('--recheck-csv',type=Path,help='Full-grid exact NTL recheck CSV if moved')
+     ap.add_argument('--resume',action='store_true',help='Resume a previously initialized candidate with unchanged input manifest')
+
+--- archive/original_sources/audit_ERPI_final_rasters_2001_2020.py
++++ scripts/03_validation/audit_final_rasters.py
+@@ -57,6 +57,7 @@
+ import argparse
+ import hashlib
+ import math
++import os
+ from pathlib import Path
+ from dataclasses import dataclass, asdict
+ 
+@@ -71,7 +72,7 @@
+ YEARS = list(range(2001, 2021))
+ INDICATORS = ("VCI", "LCN", "HCI", "TSI", "MSI")
+ 
+-DEFAULT_ROOT = Path(r"F:\data\China\ERI_recalculated_2001_2020")
++DEFAULT_ROOT = Path(os.environ.get("ERPI_PRODUCT_ROOT", str(Path(os.environ.get("ERPI_DATA_ROOT", "./data")) / "ERI_recalculated_2001_2020_NTLfix_candidate_v1"))).expanduser().resolve()
+ OUTDIR_NAME = "FINAL_ERPI_TECHNICAL_AUDIT"
+ 
+ # Numeric tolerances are deliberately strict for a weighted sum of float32 rasters.
+
+--- archive/original_sources/audit_ERPI_NTLfix_candidate_2001_2020.py
++++ scripts/03_validation/audit_NTL_corrected_candidate.py
+@@ -29,6 +29,7 @@
+ import json
+ import hashlib
+ import math
++import os
+ from pathlib import Path
+ from dataclasses import dataclass, asdict
+ 
+@@ -43,7 +44,7 @@
+ YEARS = list(range(2001, 2021))
+ INDICATORS = ("VCI", "LCN", "HCI", "TSI", "MSI")
+ 
+-DEFAULT_ROOT = Path(r"F:\data\China\ERI_recalculated_2001_2020_NTLfix_candidate_v1")
++DEFAULT_ROOT = Path(os.environ.get("ERPI_PRODUCT_ROOT", str(Path(os.environ.get("ERPI_DATA_ROOT", "./data")) / "ERI_recalculated_2001_2020_NTLfix_candidate_v1"))).expanduser().resolve()
+ CANDIDATE_DIRNAME = "ERI_recalculated_2001_2020_NTLfix_candidate_v1"
+ OUTDIR_NAME = "FINAL_ERPI_TECHNICAL_AUDIT_NTLfix"
+ 
+
+--- archive/original_sources/assess_CLCD_coverage_impact_NTLfix_2001_2020.py
++++ scripts/03_validation/assess_CLCD_coverage.py
+@@ -32,7 +32,7 @@
+ 
+ YEARS = range(2001, 2021)
+ THRESHOLDS = (0.50, 0.90, 0.95, 0.99)
+-ROOT = Path(r"F:\data\China")
++ROOT = Path(os.environ.get("ERPI_DATA_ROOT", "./data")).expanduser().resolve()
+ CANDIDATE_NAME = "ERI_recalculated_2001_2020_NTLfix_candidate_v1"
+ NODATA = -9999.0
+ VALID_CLASSES = np.arange(1, 10, dtype=np.uint8)
+
+--- archive/original_sources/make_ERPI_publication_figures_v7_1_layoutsafe.py
++++ scripts/04_visualization/make_publication_figures.py
+@@ -47,6 +47,7 @@
+ import argparse
+ import json
+ import math
++import os
+ from pathlib import Path
+ 
+ import numpy as np
+@@ -68,8 +69,8 @@
+ YEARS = list(range(2001, 2021))
+ IND = ["VCI", "LCN", "HCI", "TSI", "MSI"]
+ 
+-DATA_ROOT = Path(r"F:\data\China")
+-DEFAULT_ROOT = DATA_ROOT / "ERI_recalculated_2001_2020_NTLfix_candidate_v1"
++DATA_ROOT = Path(os.environ.get("ERPI_DATA_ROOT", "./data")).expanduser().resolve()
++DEFAULT_ROOT = Path(os.environ.get("ERPI_PRODUCT_ROOT", str(DATA_ROOT / "ERI_recalculated_2001_2020_NTLfix_candidate_v1"))).expanduser().resolve()
+ OUTNAME = "manuscript_figures_FINAL_v7_1_layoutsafe"
+ 
+ EXPECTED_HCI = 0.155397
+
+--- archive/original_sources/ERI_technical_validation_2001_2020.py
++++ scripts/03_validation/technical_sensitivity_analysis.py
+@@ -49,6 +49,7 @@
+ from __future__ import annotations
+ 
+ import math
++import os
+ from pathlib import Path
+ 
+ import numpy as np
+@@ -62,8 +63,8 @@
+ # 0. CONFIG
+ # =============================================================================
+ 
+-ROOT = Path(r"F:\data\China")
+-ERI_ROOT = ROOT / "ERI_recalculated_2001_2020"
++ROOT = Path(os.environ.get("ERPI_DATA_ROOT", "./data")).expanduser().resolve()
++ERI_ROOT = Path(os.environ.get("ERPI_PRODUCT_ROOT", str(ROOT / "ERI_recalculated_2001_2020_NTLfix_candidate_v1"))).expanduser().resolve()
+ 
+ INDICATOR_DIR = ERI_ROOT / "indicators"
+ ERI_DIR = ERI_ROOT / "ERI"
+
+--- archive/original_sources/ERI_NPP_only_validation_2001_2020.py
++++ scripts/03_validation/NPP_context_comparison.py
+@@ -504,7 +504,8 @@
+ 
+ def parse_args():
+     p = argparse.ArgumentParser(description=__doc__)
+-    p.add_argument("--root", default=r"F:\data\China", help="Local China data root")
++    p.add_argument("--root", default=os.environ.get("ERPI_DATA_ROOT", "./data"), help="Parent directory of NPP/ and ERPI products")
++    p.add_argument("--erpi-root", default=os.environ.get("ERPI_PRODUCT_ROOT"), help="Corrected ERPI product directory (default: <root>/ERI_recalculated_2001_2020_NTLfix_candidate_v1")
+     p.add_argument("--threads", type=int, default=4, help="rasterio warp threads, integer >=1")
+     p.add_argument("--sample-cap", type=int, default=200_000,
+                    help="Approximate maximum systematic Spearman sample per comparison")
+@@ -529,7 +530,7 @@
+ def main():
+     args = parse_args()
+     root = Path(args.root)
+-    eriroot = root / "ERI_recalculated_2001_2020"
++    eriroot = Path(args.erpi_root).expanduser().resolve() if args.erpi_root else root / "ERI_recalculated_2001_2020_NTLfix_candidate_v1"
+     out = eriroot / "independent_NPP_only_validation"
+     out.mkdir(parents=True, exist_ok=True)
+     npp_dir = root / "NPP"
+

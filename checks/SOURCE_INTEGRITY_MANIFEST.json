@@ -1,0 +1,65 @@
+[
+  {
+    "source": "recalculate_ERI_2001_2020_FINAL.py",
+    "portable_path": "scripts/01_preprocessing/generate_initial_legacy_product.py",
+    "original_sha256": "d41e9c8d9ba53567dd7711caa76e45adf6a5637ab87aa2c67c3a23d0dbba1022",
+    "portable_sha256": "dab45eb0e1c59130333b087ccc8490216198f31b3dd1f80ea61449b038a7fe8d",
+    "changed_lines": 3
+  },
+  {
+    "source": "recheck_ERPI_NTL_exact_full_grid.py",
+    "portable_path": "scripts/03_validation/recheck_NTL_source_fullgrid.py",
+    "original_sha256": "9adba30bd5017ca7e032ea858b88a594aefcbdea56ad3a58ebeef229ed0be66a",
+    "portable_sha256": "da34ac3bc17229ceb2a132f8684bddea06af7bd9a4dc5bca620614216541ea16",
+    "changed_lines": 3
+  },
+  {
+    "source": "ERPI_2001_2020_NTL_corrected_candidate.py",
+    "portable_path": "scripts/02_erpi_generation/generate_NTL_corrected_ERPI.py",
+    "original_sha256": "17aefcbf5568ab5e616719e94de6bb789dc45cfda93f400bf3897af3dd5624f5",
+    "portable_sha256": "6ff4042eba48c7909342062dc70d7580e08891f2d1430318a32a749747ff7034",
+    "changed_lines": 2
+  },
+  {
+    "source": "audit_ERPI_final_rasters_2001_2020.py",
+    "portable_path": "scripts/03_validation/audit_final_rasters.py",
+    "original_sha256": "e9eafbc16841168b445d3bf9f4426b508350d35f76e850170eda71bd87e0390d",
+    "portable_sha256": "dc47e6c9a2a21acf6f44efa060b426d92d256a072fdd15d779ff161acde4e17b",
+    "changed_lines": 3
+  },
+  {
+    "source": "audit_ERPI_NTLfix_candidate_2001_2020.py",
+    "portable_path": "scripts/03_validation/audit_NTL_corrected_candidate.py",
+    "original_sha256": "70b3b91eb3cb5c91c5312720301676fee6aa518b28f7ff1af2e8d3ae79059e7c",
+    "portable_sha256": "c2b6f6a0efd7f2902bfea1cc2236879e46468d5e8e6da613daaf90ace734b3e8",
+    "changed_lines": 3
+  },
+  {
+    "source": "assess_CLCD_coverage_impact_NTLfix_2001_2020.py",
+    "portable_path": "scripts/03_validation/assess_CLCD_coverage.py",
+    "original_sha256": "115cf8df236e33c7222cc1a88bcd5b19a340364ec29a02d60e482470eaa37053",
+    "portable_sha256": "820f4455c317c7e80bcaa1445cddaa4441903a60ad5bbb05d9dbbdf01f77bbd1",
+    "changed_lines": 2
+  },
+  {
+    "source": "make_ERPI_publication_figures_v7_1_layoutsafe.py",
+    "portable_path": "scripts/04_visualization/make_publication_figures.py",
+    "original_sha256": "9d7768a595ca441836598e32b51c2924fb08d8293b2266a7b6ec8724d99201c5",
+    "portable_sha256": "ce6150a76185b6bed2f8cabc38baa843371dbcb7dd7c541939cbf6ed5f3e38a3",
+    "changed_lines": 5
+  },
+  {
+    "source": "ERI_technical_validation_2001_2020.py",
+    "portable_path": "scripts/03_validation/technical_sensitivity_analysis.py",
+    "original_sha256": "2cbe66695bb760cb8ffe706eeac1144899a455093a46692af036f1ea10c0e1ee",
+    "portable_sha256": "16637e0f0ed44103eb8605acbbc1d96ee583ba1555962c2eeecf3e1567166bba",
+    "changed_lines": 5
+  },
+  {
+    "source": "ERI_NPP_only_validation_2001_2020.py",
+    "portable_path": "scripts/03_validation/NPP_context_comparison.py",
+    "original_sha256": "454642f476c88a818007a14cb1d00fe3beb0bb235ddd2b13c7e987301a55882b",
+    "portable_sha256": "8d68200c879b6dc8706460d07f1c703f69040be46314aff7cb4fda7495c0fa46",
+    "changed_lines": 5
+  }
+]

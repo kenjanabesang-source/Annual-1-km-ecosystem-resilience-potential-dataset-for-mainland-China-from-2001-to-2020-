@@ -1,0 +1,15 @@
+name: erpi-repro
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - pandas
+  - rasterio
+  - geopandas
+  - shapely
+  - pyproj
+  - tqdm
+  - matplotlib
+  - scipy
+  - gdal

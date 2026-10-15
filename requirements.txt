@@ -1,0 +1,10 @@
+# Alternate pip install; geospatial wheels can be platform-sensitive.
+numpy
+pandas
+rasterio
+geopandas
+shapely
+pyproj
+tqdm
+matplotlib
+scipy

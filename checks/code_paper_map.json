@@ -1,0 +1,130 @@
+[
+  {
+    "section": "Methods: study grid",
+    "script": "generate_initial_legacy_product.py",
+    "functions": "build_target_grid",
+    "outputs": "method_config.json; common Albers grid",
+    "stage": "legacy upstream",
+    "notes": "Grid CRS/shape must be checked from actual GeoTIFFs"
+  },
+  {
+    "section": "Methods: NDVI/VCI",
+    "script": "generate_initial_legacy_product.py",
+    "functions": "preprocess_ndvi; compute_baselines; build_indicators",
+    "outputs": "intermediate/NDVI; baselines/NDVI_Q05,NDVI_Q95; indicators/VCI",
+    "stage": "legacy upstream",
+    "notes": "Annual NDVI source inputs must exist"
+  },
+  {
+    "section": "Methods: CLCD/LCN",
+    "script": "generate_initial_legacy_product.py",
+    "functions": "create_clcd_binary; preprocess_clcd; build_indicators",
+    "outputs": "intermediate/LCN; indicators/LCN",
+    "stage": "legacy upstream",
+    "notes": "Source-coverage audit is separate"
+  },
+  {
+    "section": "Methods: NTL HCI correction",
+    "script": "generate_NTL_corrected_ERPI.py",
+    "functions": "source fill masking; corrected reprojection; HCI construction",
+    "outputs": "corrected NTL; indicators/HCI",
+    "stage": "corrected main",
+    "notes": "Source fill=-32768 must be masked before warp"
+  },
+  {
+    "section": "Methods: thermal/moisture proximity",
+    "script": "generate_initial_legacy_product.py",
+    "functions": "preprocess_multiband_annual; temporal_median; temporal_mad; build_indicators",
+    "outputs": "indicators/TSI and MSI; baseline median/MAD",
+    "stage": "legacy upstream",
+    "notes": "26-band year mapping: 2001=band2, 2020=band21"
+  },
+  {
+    "section": "Methods: pooled entropy weights",
+    "script": "generate_NTL_corrected_ERPI.py",
+    "functions": "re-estimate pooled weights",
+    "outputs": "entropy_weights_fixed_2001_2020.csv",
+    "stage": "corrected main",
+    "notes": "Check HCI ≈0.155397"
+  },
+  {
+    "section": "Data Records: annual rasters",
+    "script": "generate_NTL_corrected_ERPI.py",
+    "functions": "recompute annual ERPI",
+    "outputs": "ERI/ERI_2001.tif ... ERI_2020.tif",
+    "stage": "corrected main",
+    "notes": "Preserves/shrinks legacy valid footprint"
+  },
+  {
+    "section": "Technical Validation: source NTL audit",
+    "script": "recheck_NTL_source_fullgrid.py",
+    "functions": "warp_ntl; calc_hci",
+    "outputs": "SOURCE_PROCESSING_AUDIT/NTL_EXACT_RECHECK/*",
+    "stage": "validation",
+    "notes": "Requires original source rasters"
+  },
+  {
+    "section": "Technical Validation: full raster integrity",
+    "script": "audit_final_rasters.py",
+    "functions": "structural_audit; reconstruction_audit; support_audit",
+    "outputs": "FINAL_ERPI_TECHNICAL_AUDIT/*",
+    "stage": "validation",
+    "notes": "Pass corrected --root, not the legacy directory"
+  },
+  {
+    "section": "Technical Validation: corrected QA",
+    "script": "audit_NTL_corrected_candidate.py",
+    "functions": "independent corrected candidate QA",
+    "outputs": "NTL correction audit files",
+    "stage": "validation",
+    "notes": "Fails on legacy product identity"
+  },
+  {
+    "section": "Technical Validation: CLCD coverage",
+    "script": "assess_CLCD_coverage.py",
+    "functions": "native-area coverage sensitivity",
+    "outputs": "CLCD source area coverage QA",
+    "stage": "validation",
+    "notes": "Inputs native 30m CLCD required"
+  },
+  {
+    "section": "Technical Validation: equal vs entropy",
+    "script": "technical_sensitivity_analysis.py",
+    "functions": "equal_weight_analysis",
+    "outputs": "technical_validation/entropy_vs_equal_comparison.csv",
+    "stage": "validation",
+    "notes": "Final corrected product by environment"
+  },
+  {
+    "section": "Technical Validation: leave-one-out",
+    "script": "technical_sensitivity_analysis.py",
+    "functions": "leave_one_out_analysis",
+    "outputs": "technical_validation/leave_one_out_comparison.csv",
+    "stage": "validation",
+    "notes": "Five exclusions, renormalized weights"
+  },
+  {
+    "section": "Technical Validation: common support and trend",
+    "script": "technical_sensitivity_analysis.py",
+    "functions": "build_common_mask; annual_indicator_statistics; trend_and_change_tables",
+    "outputs": "technical_validation/annual_eri_common_mask.csv; trend_summary.csv; change_decomposition_2019_2020.csv",
+    "stage": "validation",
+    "notes": "Remove stale derived common mask after backup"
+  },
+  {
+    "section": "Technical Validation: NPP comparison",
+    "script": "NPP_context_comparison.py",
+    "functions": "align_npp; temporal_maps; long_term_comparison; annual_comparison",
+    "outputs": "independent_NPP_only_validation/NPP_*csv",
+    "stage": "validation",
+    "notes": "NPP not resilience ground truth; corrected --erpi-root"
+  },
+  {
+    "section": "Figures 1–5 and S1–S2",
+    "script": "make_publication_figures.py",
+    "functions": "fig1; fig2; fig3; fig4; fig5; figs1; figs2",
+    "outputs": "manuscript_figures_FINAL_v7_1_layoutsafe/",
+    "stage": "visualization",
+    "notes": "Requires validated cartographic context for Fig.1"
+  }
+]
